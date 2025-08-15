@@ -45,6 +45,30 @@ export const getAllUsers = async(req, res) =>{
     } catch(error) {
         //Tratamento de erro
         console.log(error);
-        res.send(500).json({message: 'Erro ao buscar usuários', error: error.message});
+        res.status(500).json({message: 'Erro ao buscar usuários', error: error.message});
     }
+};
+
+export const getOneUser = async(req, res) =>{
+    try{
+        const searchId = await prisma.user.findUnique({
+            where: {id: req.params.id},
+            select:{
+                id: true,
+                name: true
+                //Retornando o ID passado como parametro e o nome(so pra teste)
+            }
+        });
+
+        if(searchId!=null){
+            //res de retorno.
+            res.status(200).json(searchId);    
+        } else {
+            res.status(404).json({message: 'Usuário não encontrado.'});
+        };
+    } catch(error){
+        //Tratamento de erro
+        console.log(error);
+        res.status(500).json({message: 'Erro ao buscar ID', error: error.message});    
+    }   
 };
