@@ -27,3 +27,24 @@ export const createUser = async (req, res) => {
         res.status(500).json({message: 'Erro ao criar usuário', error: error.message });
     }
 };
+
+export const getAllUsers = async(req, res) =>{
+    try{
+        const users = await prisma.user.findMany({
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                createdAt: true
+                //Retornando todos os campos do BD menos o password por questões de segurança.
+            }
+        });
+
+        //objeto res(response) para retornar o que foi solicitado.
+        res.status(200).json(users);
+    } catch(error) {
+        //Tratamento de erro
+        console.log(error);
+        res.send(500).json({message: 'Erro ao buscar usuários', error: error.message});
+    }
+};
