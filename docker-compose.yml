@@ -1,0 +1,15 @@
+version: '3.8' # Especifica a versão da sintaxe do docker-compose
+
+services: # Define os contêineres que queremos criar
+  postgres: # Um nome que damos para o nosso serviço/contêiner de banco de dados
+    image: postgres:14-alpine # A imagem que queremos usar: PostgreSQL versão 14, otimizada (alpine)
+    container_name: postgres_db_tarefas # Nome específico para o nosso contêiner
+    restart: always # Sempre reiniciar o contêiner se ele parar por algum motivo
+    ports:
+      - "5432:5432" # Mapeia a porta 5432 do seu PC para a porta 5432 do contêiner
+    environment: # Define as variáveis de ambiente (configurações) dentro do contêiner
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=tarefas_api
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data # Garante que os dados do banco não se percam se o contêiner for recriado
