@@ -72,3 +72,35 @@ export const getOneUser = async(req, res) =>{
         res.status(500).json({message: 'Erro ao buscar ID', error: error.message});    
     }   
 };
+
+export const updateUser = async(req, res) =>{
+    try{
+        const {id} = req.params;
+        const {name} = req.body;
+        const newNameUser = await prisma.user.update({
+            where: { id },
+            data: { name }, //Atualiza o campo "name" com o valor atribuído na variável "name" declarada no inicio da função.
+            select: { //Select/retorno para verificar se a alteração foi realizada.
+                id: true,
+                name: true,
+                email: true,
+                createdAt: true,
+                updatedAt: true, //Campo atualiado automaticamente pela 'function prisma.user.update();'
+
+            }
+        });
+
+        res.status(200).json(newNameUser);
+
+    } catch(error) {
+        console.log(error);
+        
+        // O Prisma gera um erro com o código 'P2025' quando o registro a ser atualizado não é encontrado.
+        if(error.code === 'P2025'){
+            return res.status(404).json({message: 'Usuário não encontrado.'});
+        }
+
+        //outros erros retornar código 500.
+        res.status(500).json({message:'Erro interno no servidor.'})
+    }
+};
