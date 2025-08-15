@@ -44,7 +44,7 @@ export const getAllUsers = async(req, res) =>{
         res.status(200).json(users);
     } catch(error) {
         //Tratamento de erro
-        console.log(error);
+        console.error(error);
         res.status(500).json({message: 'Erro ao buscar usuários', error: error.message});
     }
 };
@@ -68,7 +68,7 @@ export const getOneUser = async(req, res) =>{
         };
     } catch(error){
         //Tratamento de erro
-        console.log(error);
+        console.error(error);
         res.status(500).json({message: 'Erro ao buscar ID', error: error.message});    
     }   
 };
@@ -93,14 +93,37 @@ export const updateUser = async(req, res) =>{
         res.status(200).json(newNameUser);
 
     } catch(error) {
-        console.log(error);
+        console.error(error);
         
         // O Prisma gera um erro com o código 'P2025' quando o registro a ser atualizado não é encontrado.
         if(error.code === 'P2025'){
             return res.status(404).json({message: 'Usuário não encontrado.'});
-        }
+        };
 
         //outros erros retornar código 500.
-        res.status(500).json({message:'Erro interno no servidor.'})
+        res.status(500).json({message:'Erro interno no servidor.'});
+    }
+};
+
+export const deleteUser = async(req, res) =>{
+    try{
+        const {id} = req.params;
+        const dltUser = await prisma.user.delete({
+            where: {id}     //deleta o usuário quando o id for localizado
+        });
+
+        //envio da resposta '204 No Content'
+        res.status(204).send();
+
+    } catch(error) {
+        console.error(error);
+
+        //dele funciona da mesma forma que o update se não encontra o usuário, o código retornado é P2025, portanto a tratativa de erro é igual.
+        if (error.code === 'P2025'){
+            return res.status(404).json({message: 'Usuário não encontrado.'});
+        };
+
+        //outros erros retornar código 500.
+        res.status(500).json({message:'Erro interno no servidor.'});
     }
 };
