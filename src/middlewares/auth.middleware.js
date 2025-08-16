@@ -29,7 +29,7 @@ export const authMiddleware = (req, res, next) => {
         }
 
         //se o token for válido, anexa o payload (com userID) na requisição
-        req.userID = decoded.userID;
+        req.userId = decoded.userId;
 
         //chama o proximo middleware ou controller.
         return next();
