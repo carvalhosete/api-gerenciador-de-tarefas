@@ -55,3 +55,63 @@ export const getAllTasks = async(req, res) => {
         res.status(500).json({ message: 'Erro ao procurar tarefas.' });
     };
 }
+
+export const updateTasks = async(req, res) =>{
+    try {
+        const {id: taskID } = req.params;
+        const userId = req.userId;
+        const { title, description, isDone } = req.body;
+
+        const updateTask = await prisma.task.update({
+            where: {
+                id: taskID,
+                ownerId: userId,
+            },
+            data: {
+                title,
+                description,
+                isDone,
+            },
+        });
+
+        res.status(200).json(updateTask);
+
+    } catch(error) {
+        console.error(error);
+        
+        // O Prisma gera um erro com o código 'P2025' quando o registro a ser atualizado não é encontrado.
+        if(error.code === 'P2025'){
+            return res.status(404).json({message: 'Tarefa não encontrada.'});
+        };
+
+        //outros erros retornar código 500.
+        res.status(500).json({message:'Erro interno no servidor.'});
+    }
+};
+
+export const deleteTask = async(req, res) =>{
+    try{
+        const { id: taskID } = req.params;
+        const userId = req.userId;
+        const dltTask = await prisma.task.delete({
+            where: {
+                id: taskID,
+                ownerId: userId
+            }     //deleta a task quando o id for localizado
+        });
+
+        //envio da resposta '204 No Content'
+        res.status(204).send();
+
+    } catch(error) {
+        console.error(error);
+
+        //dele funciona da mesma forma que o update se não encontra o usuário, o código retornado é P2025, portanto a tratativa de erro é igual.
+        if (error.code === 'P2025'){
+            return res.status(404).json({message: 'Tarefa não encontrada.'});
+        };
+
+        //outros erros retornar código 500.
+        res.status(500).json({message:'Erro interno no servidor.'});
+    }
+};

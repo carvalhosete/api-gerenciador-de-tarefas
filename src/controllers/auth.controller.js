@@ -29,7 +29,7 @@ export const login = async (req, res) => {
 
         //gera token JWT caso a senha esteja correta.
         const token = jwt.sign(
-            {userID: user.id},      //PayLoad que será guardado no token
+            {userId: user.id},      //PayLoad que será guardado no token
             process.env.JWT_SECRET, //segredo guardado no arquivo .env
             {expiresIn: '1h'}       //define a validade do token (1 hora)
         );
