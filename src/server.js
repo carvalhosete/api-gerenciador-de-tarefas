@@ -1,5 +1,6 @@
 import express from 'express';
 import userRoutes from './routes/user.routes.js'; //importa as rotas
+import authRoutes from './routes/auth.routes.js';
 
 const app = express();
 const PORT = 3000;
@@ -15,4 +16,8 @@ app.get('/', (req, res) =>{
 });
 
 //Usa as rotas de usuário
-app.use('/api', userRoutes);    
+app.use('/api', userRoutes);
+
+//Usa as rotas de autenticação
+app.use('/api', authRoutes);
+

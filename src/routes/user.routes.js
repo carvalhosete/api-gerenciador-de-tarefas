@@ -1,17 +1,17 @@
 import { Router } from "express";
 import { createUser, getAllUsers, getOneUser, updateUser, deleteUser } from "../controllers/user.controller.js";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
+//rota public: qualquer um pode criar um novo usuário
 router.post('/users', createUser);
 
-router.get('/users', getAllUsers);
-
-router.get('/users/:id', getOneUser);
-
-router.put('/users/:id', updateUser);
-
-router.delete('/users/:id', deleteUser);
+//rotas protegidas pelo authMiddleware. Sómente usuários com token válido podem acessar.
+router.get('/users', authMiddleware, getAllUsers);
+router.get('/users/:id', authMiddleware, getOneUser);
+router.put('/users/:id', authMiddleware, updateUser);
+router.delete('/users/:id', authMiddleware, deleteUser);
 
 export default router;
 
