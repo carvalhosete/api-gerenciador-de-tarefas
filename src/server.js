@@ -1,6 +1,7 @@
 import express from 'express';
 import userRoutes from './routes/user.routes.js'; //importa as rotas
 import authRoutes from './routes/auth.routes.js';
+import taskRoutes from './routes/task.routes.js'; //importa as rotas de task
 
 const app = express();
 const PORT = 3000;
@@ -15,9 +16,12 @@ app.get('/', (req, res) =>{
     res.send('API Gerenciador de Tarefas está ON!');
 });
 
-//Usa as rotas de usuário
+//Use as rotas de usuário
 app.use('/api', userRoutes);
 
-//Usa as rotas de autenticação
+//Use as rotas de autenticação
 app.use('/api', authRoutes);
+
+//Use rotas de tarefas
+app.use('/api', taskRoutes);
 
