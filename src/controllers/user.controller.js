@@ -7,6 +7,14 @@ export const createUser = async (req, res) => {
     try {
         const { email, name, password } = req.body;
 
+        const existingUser = await prisma.user.findUnique({
+            where:{email},
+        });
+
+        if(existingUser){
+            return res.status(409).json({message: "Este e-mail já está em uso."});
+        }
+
         //Criptografar a senha antes de salvar
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -20,7 +28,7 @@ export const createUser = async (req, res) => {
 
         // Não retornar a senha na resposta!
         const { password: _, ...userWithouPassoword } = newUser;
-        res.status(201).json(userWithouPassoword);
+        res.status(201).json({message: "Usuário criado com sucesso!"});
     
     } catch (error) {
         //Tratamento de erro
