@@ -1,4 +1,4 @@
-# API de Gestão de Tarefas (Backend)
+# API Gerenciador de Tarefas (Backend)
 
 ![Status do Projeto](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
 
@@ -6,7 +6,7 @@ API RESTful desenvolvida para servir como backend para a aplicação de Gerencia
 
 Este projeto foi construído com Node.js e Express, utilizando Prisma como ORM para interação com um banco de dados PostgreSQL. A arquitetura foi planejada para ser escalável, segura e de fácil manutenção.
 
-**➡️ [Repositório do Frontend](https://github.com/carvalhosete/gerenciador-tarefas-frontend)**
+➡️ [Repositório do Frontend](https://github.com/carvalhosete/gerenciador-tarefas-frontend) - **Em Desenvolvimento**
 
 ---
 
