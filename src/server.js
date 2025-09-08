@@ -1,4 +1,5 @@
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import fs from 'fs';
 import path from 'path'
@@ -7,16 +8,20 @@ import userRoutes from './routes/user.routes.js'; //importa as rotas
 import authRoutes from './routes/auth.routes.js';
 import taskRoutes from './routes/task.routes.js'; //importa as rotas de task
 import swaggerUi from 'swagger-ui-express';
+import './passport-setup.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const swaggerFile = JSON.parse(fs.readFileSync(path.join(__dirname,'../swagger-output.json'),'utf-8'));
 
-
 const app = express();
 const PORT = 3000;
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
+app.use(cookieParser());
 
 app.use(express.json()); //Faz o Express entender o JSON no corpo das requisições
 

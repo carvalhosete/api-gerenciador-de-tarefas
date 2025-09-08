@@ -35,7 +35,16 @@ export const login = async (req, res) => {
         );
 
         //retorna token pro cliente.
-        res.status(200).json({token});
+        //res.status(200).json({token});
+
+        res.cookie('jwt', token,{
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: 'strict',
+            maxAge: 3600000 //hora em milissegundos.
+        });
+
+        res.status(200).json({message: 'Login bem-sucedido. '})
 
     } catch(error) {
         console.error(error);
