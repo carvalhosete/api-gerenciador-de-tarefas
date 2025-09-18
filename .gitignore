@@ -3,3 +3,17 @@ node_modules
 .env
 
 /generated/prisma
+
+# Arquivos e pastas do Node.js
+node_modules/
+npm-debug.log
+
+# Arquivos de ambiente (contêm segredos!)
+.env
+
+# Pasta de dados do PostgreSQL
+postgres-data/
+
+# Logs e arquivos de sistema
+*.log
+*.pid

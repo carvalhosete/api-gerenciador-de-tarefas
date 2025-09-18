@@ -11,16 +11,12 @@ export const authMiddleware = (req, res, next) => {
         return res.status(401).json({ message: 'Acesso negado. Nenhum token fornecido.' });
     }
     
-    //verifica o token e anexa o userID à requisição
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) =>{
-        if(err){
-            return res.status(401).json({ message: 'Token inválido ou expirado.' });
-        }
-
-        //se o token for válido, anexa o payload (com userID) na requisição
+    try{
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.userId = decoded.userId;
-
-        //chama o proximo middleware ou controller.
-        return next();
-    });
+        next();
+    } catch(error){
+        return res.status(401).json({message: 'Não autorizado: Token inválido'});
+    }
+    
 };

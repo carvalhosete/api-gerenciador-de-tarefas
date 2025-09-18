@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from '../prismaClient.js';
 
 export const createTask = async(req, res) =>{
     try{
@@ -34,7 +32,7 @@ export const createTask = async(req, res) =>{
 export const getAllTasks = async(req, res) => {
     try {
         const userId = req.userId; //pega ID do usuário logado
-
+        console.log("Esse é o ID do login do google: ", userId);
         const tasks = await prisma.task.findMany({
             where: { ownerId: userId },
             select: {
